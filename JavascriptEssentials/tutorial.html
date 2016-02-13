@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+     <script src="./tutorial.js"></script>
+     
+     <!-- if you have them locally, uncomment this and comment the DCM includes section 
+          <script src="./scripts/jquery.min.js"></script>
+          <link rel="stylesheet" href="./scripts/bootstrap/css/bootstrap.min.css">
+     -->
+     
+     <!-- DCM includes section -->
+     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+     
+     <script>
+          $(document).ready(function(){
+               // jQuery Button
+               var Button = function(element, type, text)
+               {
+                 this.element = element;
+                 this.type = type || 'default';
+                 this.text = text;
+                 this.init();
+               };
+               
+               Button.prototype.init = function() {
+                 this.element.addClass('btn btn-' + this.type);
+                 if (this.text) {
+                   this.element.text(this.text);
+                 }
+               };
+               
+               
+               var myButton = new Button(jQuery('#button'));
+               
+               // jQuery Touch me if you dare button         
+               var DangerButton = function(element, text) {
+                   Button.call(this, element, 'danger', text);
+               };
+               
+               DangerButton.prototype = Object.create(Button.prototype);
+               DangerButton.prototype.constructor = DangerButton;
+               
+               var CrazyButton = function(element, text) {
+                   DangerButton.call(this, element, text);
+               };
+               
+               CrazyButton.prototype = Object.create(DangerButton.prototype);
+               CrazyButton.prototype.constructor = CrazyButton;
+               CrazyButton.prototype.init = function() {
+                   Button.prototype.init.call(this);
+                   this.element.mouseover(function() {
+                       this.element.css({
+                           marginLeft: Math.floor(Math.random() * 150),
+                           marginTop: Math.floor(Math.random() * 150)
+                       });
+                   }.bind(this));
+               };
+               
+               var myButton2 = new CrazyButton(jQuery('#button2'), 'Little Crazy');
+               
+               // jquery super crazy button
+               jQuery.fn.crazyButton = function() {
+                   return jQuery(this).each(function() {
+                       new CrazyButton(jQuery(this), 'Too Crazy');
+                   });
+               };
+               
+               jQuery('#button3').crazyButton();
+          });
+     </script>
+     <body>
+          <a id="button">Click Me</a>
+          <a id="button2">Click Me</a>
+          <a id="button3">Click Me</a>
+     </body>
+
+</html> 
